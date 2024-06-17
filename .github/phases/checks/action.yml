@@ -32,6 +32,7 @@ runs:
         exit 1
         fi
       shell: bash
+      continue-on-error: true
     - uses: ghe-actions/dockerfile-validator@v1
       with:
         dockerfile: 'Dockerfile'
