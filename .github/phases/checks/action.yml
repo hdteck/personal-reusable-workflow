@@ -19,7 +19,7 @@ runs:
       shell: bash
     - name: 'Check test classes'
       run: |
-        if [ ! -f "${GITHUB_WORKSPACE}/src/test" ]; then
+        if [ ! -f "${GITHUB_WORKSPACE}/src/test/" ]; then
         echo "no esta creado el directorio de test, no podemos pasar test de junit"
         exit 1
         fi
