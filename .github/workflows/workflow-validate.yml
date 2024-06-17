@@ -1,0 +1,38 @@
+name: 'workflow-validate'
+
+on:
+    pull_request:
+      types:
+        - closed
+
+
+jobs:
+    merge-feature-to-main:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                ref: "feature_1"
+
+            - name: Merge feature_1 -> main
+              uses: devmasx/merge-branch@master
+              with:
+                type: now
+                from_branch: feature_1
+                target_branch: main
+                github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+    main-checks:
+        needs: 'merge-feature-to-main'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                ref: main      
+            - name: 'file-checks'
+              uses: ./.github/phases/checks/ 
+    workflowcd:
+        needs: 'main-checks'
+        uses: ./.github/workflows/workflow-build.yml
+
+
+           

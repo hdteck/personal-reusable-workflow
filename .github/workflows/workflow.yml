@@ -1,0 +1,91 @@
+name: helloword_app
+
+on:
+  pull_request:
+    branches:
+       - feature_1
+       - main
+    types:
+      - opened
+      - edited
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: "${{ github.ref }}"         
+          java-version: "17"
+          distribution: "temurin"  
+      - name: 'file-checks'
+        uses: ./.github/phases/checks/
+  junit:
+    needs: 'checks'
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: "${{ github.ref }}"
+          java-version: "17"
+          distribution: "temurin" 
+      - name: 'file-checks'
+        uses: ./.github/phases/code_analysis/
+  code_analysis:
+    needs: 'checks'
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v4
+          with:
+            ref: "${{ github.ref }}"
+            java-version: "17"
+            distribution: "temurin" 
+        - name: 'code-analysis-action'
+          uses: ./.github/phases/sonar/
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_URL: ${{ secrets.SONAR_URL }}
+#  build_docker:
+#    needs: ['code_analysis','junit']
+#    runs-on: ubuntu-latest
+#    steps:
+ #      - uses: actions/checkout@v4
+#         with:
+#          ref: "${{ github.ref }}"
+#          java-version: "17"
+#          distribution: "temurin"           
+#       - name: 'build image'
+#         uses: ./.github/phases/build/
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+#           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+ # docker_trivy:
+#    needs: 'build_docker'
+#    runs-on: ubuntu-latest
+#    permissions: write-all
+#    steps:
+ #      - uses: actions/checkout@v4
+  #       with:
+ #         ref: "${{ github.ref }}"
+  #        java-version: "17"
+ #         distribution: "temurin"           
+ #      - name: 'build image'
+ #        uses: ./.github/phases/security_validation/
+ #        env:
+  #         GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+  #         DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+#  upload_artifact:
+#    needs: 'docker_trivy'
+#    runs-on: ubuntu-latest
+#    steps:
+#       - uses: actions/checkout@v4
+#         with:
+  #         ref: "${{ github.ref }}"
+#          java-version: "17"
+#          distribution: "temurin"           
+#       - name: 'upload-artifact'
+ #        uses: ./.github/phases/upload_artifact/
+ #        env:
+ #          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+

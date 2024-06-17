@@ -1,0 +1,35 @@
+name: initial checks
+description: comprobación de pom.xml
+runs:
+  using: "composite"
+  steps:
+    - name: Check for CODEOWNERS changes
+      run: |
+          if [ -f "CODEOWNERS" ]; then
+            echo "Changes detected in CODEOWNERS file. Please review and seek necessary approvals before merging."
+            exit 1
+          fi
+      shell: bash    
+    - name: 'Check pom.xml exits'
+      run: |
+        if [ ! -f "${GITHUB_WORKSPACE}/pom.xml" ]; then
+        echo "el fichero pom.xml no existe en el espacio de trabajo ${GITHUB_WORKSPACE}"
+        fi
+      shell: bash
+    - name: 'Check test classes'
+      run: |
+        if [ ! -f "${GITHUB_WORKSPACE}/src/test" ]; then
+        echo "no esta creado el directorio de test, no podemos pasar test de junit"
+        fi
+      shell: bash
+    - name: 'check version'
+      run: |
+        if [ "sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' pom.xml |head -1" != *"stable"* ]; then
+        echo "la versión de la aplicación no es estable"
+        fi
+      shell: bash
+      continue-on-error: true
+    - uses: ghe-actions/dockerfile-validator@v1
+      with:
+        dockerfile: 'Dockerfile'
+            

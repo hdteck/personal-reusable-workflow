@@ -1,0 +1,13 @@
+name: sonarqg
+description: ejecución de cobertura y qualitygates
+runs:
+  using: "composite"
+  steps:
+   
+    - name: SonarQube Scan
+      run: mvn clean compile sonar:sonar -Dsonar.projectKey=springboot.backend -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+      shell: bash
+    - name: Sonar qualityGate
+      run: mvn sonar-quality-gate:check -Dsonar.qualitygate.wait=true -Dsonar.projectKey=springboot.backend -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+      continue-on-error: false
+      shell: bash    

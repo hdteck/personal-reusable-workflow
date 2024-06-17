@@ -1,0 +1,22 @@
+name: docker-trivy-validation
+description:  chequeo de seguridad de la imagen docker con docker-trivy-validation
+runs:
+  using: "composite"
+  steps:
+
+    - name: Run static analysis
+      uses: aquasecurity/trivy-action@master
+      with:
+          scan-type: 'fs'
+          security-checks: 'vuln,secret,config'
+          format: 'sarif'
+          ignore-unfixed: true
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+    - name: upload trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+        category: 'code'
+      continue-on-error: true    
+

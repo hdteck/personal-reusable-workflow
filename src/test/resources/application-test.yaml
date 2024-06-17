@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: srv-hello-world
+  
+
+server:
+  port: 8090
+  
+management:
+  
+  server:
+    port: 8091
+    
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

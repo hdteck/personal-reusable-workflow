@@ -1,0 +1,12 @@
+name: build artifact
+description: creacion de imagen docker
+runs:
+  using: "composite"
+  steps:
+    - name: package
+      run: mvn clean install
+      shell: bash
+    - name: Build an image from Dockerfile
+      run: |
+          docker build -t docker.io/hdteck/springboot.backend:0.1-SNAPSHOT .
+      shell: bash     

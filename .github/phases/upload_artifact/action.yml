@@ -1,0 +1,14 @@
+name: subida de artefacto
+description:  subida de fichero jar al repo de github
+runs:
+  using: "composite"
+  steps:
+    - name: 'create local jar file'
+      run: mvn package
+      shell: bash
+    - uses: actions/upload-artifact@v4
+      with:
+       name: springboot-backend
+       path: target/springboot-backend-0.1-SNAPSHOT.jar
+       retention-days: 7
+       overwrite: true
