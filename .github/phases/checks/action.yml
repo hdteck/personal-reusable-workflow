@@ -14,21 +14,23 @@ runs:
       run: |
         if [ ! -f "${GITHUB_WORKSPACE}/pom.xml" ]; then
         echo "el fichero pom.xml no existe en el espacio de trabajo ${GITHUB_WORKSPACE}"
+        exit 1
         fi
       shell: bash
     - name: 'Check test classes'
       run: |
         if [ ! -f "${GITHUB_WORKSPACE}/src/test" ]; then
         echo "no esta creado el directorio de test, no podemos pasar test de junit"
+        exit 1
         fi
       shell: bash
     - name: 'check version'
       run: |
-        if [ "sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' pom.xml |head -1" != *"stable"* ]; then
-        echo "la versión de la aplicación no es estable"
+        if [ "sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' pom.xml |head -1" != *"SNAPSHOT"* ]; then
+        echo "la versión de la aplicación no contiene *"SNAPSHOT"*"
+        exit 1
         fi
       shell: bash
-      continue-on-error: true
     - uses: ghe-actions/dockerfile-validator@v1
       with:
         dockerfile: 'Dockerfile'
