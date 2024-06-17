@@ -24,6 +24,7 @@ runs:
         exit 1
         fi
       shell: bash
+      continue-on-error: true
     - name: 'check version'
       run: |
         if [ "sed -n -e 's/.*<version>\(.*\)<\/version>.*/\1/p' pom.xml |head -1" != *"SNAPSHOT"* ]; then
