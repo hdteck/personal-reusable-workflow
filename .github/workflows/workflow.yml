@@ -16,8 +16,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: "${{ github.ref }}"         
-          java-version: "17"
-          distribution: "temurin"  
       - name: 'file-checks'
         uses: ./.github/phases/checks/
   junit:
@@ -28,8 +26,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: "${{ github.ref }}"
-          java-version: "17"
-          distribution: "temurin" 
       - name: 'file-checks'
         uses: ./.github/phases/code_analysis/
   code_analysis:
@@ -39,8 +35,6 @@ jobs:
         - uses: actions/checkout@v4
           with:
             ref: "${{ github.ref }}"
-            java-version: "17"
-            distribution: "temurin" 
         - name: 'code-analysis-action'
           uses: ./.github/phases/sonar/
           env:
