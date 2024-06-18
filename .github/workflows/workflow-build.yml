@@ -17,9 +17,7 @@ jobs:
           run: |
             docker build -t docker.io/hdteck/springboot.backend:${{ github.sha }} .
           shell: bash
-    trivy:
-      runs-on: ubuntu-latest
-            
+          
     release:
       needs: 'build'
       uses: ./.github/workflows/workflow-release.yml
