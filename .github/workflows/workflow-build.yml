@@ -10,6 +10,12 @@ jobs:
         - uses: actions/checkout@v4
           with:
                 ref: main
+        - name: Update branch protection
+          uses: Hatzelencio/branch-protection@v1.0.0
+          with:
+              path: .github/config/main-branch-protection.yml
+          env:
+              GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}        
         - name: package
           run: mvn clean install
           shell: bash
