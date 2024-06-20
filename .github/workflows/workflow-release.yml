@@ -6,28 +6,27 @@ jobs:
     build:
       name: Create Release
       runs-on: ubuntu-latest
+      if: ${{ github.actor != 'github-actions' }}
+      outputs:
+       tag_name: ${{ steps.create_tag.outputs.tag_name }}
+       upload_url: ${{ steps.create_release.outputs.upload_url }}
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
           with:
-            ref: main
-        - name: Update branch protection
-          uses: Hatzelencio/branch-protection@v1.0.0
-          with:
-           path: .github/config/main-branch-protection.yml
-          env:
-            GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}    
+            ref: main 
+        - name: Create tag name
+          id: create_tag
+          shell: bash
+          run: |
+              echo ::set-output name=tag_name::$(grep Version README.md | awk '{print $3}')
         - name: Create Release
           id: create_release
           uses: actions/create-release@v1
           env:
-            GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+              GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           with:
-            tag_name: "v1.1"
-            release_name: Release ${{ github.head_ref }}
-            body: |
-              Changes in this Release
-              - Release de pullrquest "${{ github.event.pull_request.number }}"
-              - Rama ${{ github.head_ref }}
-            draft: false
-            prerelease: false
+              tag_name: ${{ steps.create_tag.outputs.tag_name }}
+              release_name: "Release #${{ steps.create_tag.outputs.tag_name }}"
+              draft: false
+              prerelease: false

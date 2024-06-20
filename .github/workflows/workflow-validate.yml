@@ -15,17 +15,17 @@ jobs:
                 ref: "feature_1"
             - name: Update branch protection
               uses: Hatzelencio/branch-protection@v1.0.0
-              with:
-                path: .github/config/main-branch-protection.yml
               env:
-                  GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{secrets.MY_GITHUB_TOKEN}}
+              with:    
+                  path: .github/config/main-branch-protection.yml            
             - name: Merge feature_1 -> main
               uses: devmasx/merge-branch@master
               with:
                 type: now
                 from_branch: feature_1
                 target_branch: main
-                github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+                github_token: ${{secrets.MY_GITHUB_TOKEN}}
     main-checks:
         needs: 'merge-feature-to-main'
         runs-on: ubuntu-latest
