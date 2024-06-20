@@ -15,7 +15,7 @@ jobs:
           with:
               path: .github/config/main-branch-protection.yml
           env:
-              GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}        
+              GITHUB_TOKEN: ${{secrets.MY_GITHUB_TOKEN}}        
         - name: package
           run: mvn clean install
           shell: bash
