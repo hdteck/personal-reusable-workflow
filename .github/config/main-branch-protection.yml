@@ -5,7 +5,7 @@
       contexts:
         - checks
         - junit
-        - build
+        - code_analysis
     required_pull_request_reviews:
       dismissal_restrictions: null
       dismiss_stale_reviews: true
