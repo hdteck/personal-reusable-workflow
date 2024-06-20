@@ -6,6 +6,7 @@ on:
         - closed
 
 
+
 jobs:
     merge-feature-to-main:
         runs-on: ubuntu-latest
@@ -32,6 +33,7 @@ jobs:
     workflowcd:
         needs: 'main-checks'
         uses: ./.github/workflows/workflow-build.yml
+        secrets: inherit
 
 
            

@@ -2,6 +2,9 @@ name: build docker image
 
 on:
     workflow_call:
+      secrets:
+        GITHUB_TOKEN:
+         required: true
 
 jobs:
     build:
@@ -21,3 +24,4 @@ jobs:
     release:
       needs: 'build'
       uses: ./.github/workflows/workflow-release.yml
+      secrets: inherit
