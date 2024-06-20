@@ -17,7 +17,7 @@ jobs:
             ref: main 
         - name: Create tag name
           id: create_tag
-          hell: bash
+          shell: bash
           run: |
               echo ::set-output name=tag_name::$(grep Version README.md | awk '{print $3}')
         - name: Create Release
