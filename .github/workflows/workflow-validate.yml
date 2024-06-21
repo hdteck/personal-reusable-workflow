@@ -13,7 +13,13 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                ref: "feature_1"      
+                ref: "feature_1"
+            - name: Update branch protection
+              uses: Hatzelencio/branch-protection@v1.0.0
+              with:
+                  path: .github/config/another_config.yml
+              env:
+                  GITHUB_TOKEN: ${{secrets.MY_GITHUB_TOKEN}}          
             - name: Merge feature_1 -> main
               uses: devmasx/merge-branch@master
               with:
