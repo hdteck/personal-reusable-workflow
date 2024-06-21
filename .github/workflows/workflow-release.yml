@@ -22,7 +22,7 @@ jobs:
           id: create_tag
           shell: bash
           run: |
-              echo ::set-output name=tag_name::$(grep Version README.md | awk '{print $3}')
+              echo ::set-output name=tag_name::$(grep Version README.md | awk '{print $2}')
         - name: Create Release
           id: create_release
           uses: actions/create-release@v1
