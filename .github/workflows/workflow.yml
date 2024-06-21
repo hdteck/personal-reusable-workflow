@@ -50,8 +50,6 @@ jobs:
          --header 'authorization: Bearer ${{ secrets.MY_GITHUB_TOKEN }}' \
          --header 'content-type: application/json' \
          -d '{"event":"APPROVE"}'
-
-
 #  build_docker:
 #    needs: ['code_analysis','junit']
 #    runs-on: ubuntu-latest
